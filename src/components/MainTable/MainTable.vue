@@ -50,26 +50,6 @@ export default {
 	components: {
 		ScoreCell,
 	},
-	i18n: {
-		messages: {
-			en: {
-				MainTable: {
-					name: "Name",
-					rank: "Rank",
-					totalScore: "Total Score",
-					addUser: "Add",
-				},
-			},
-			ja: {
-				MainTable: {
-					name: "名前",
-					rank: "順位",
-					totalScore: "合計",
-					addUser: "追加",
-				},
-			},
-		},
-	},
 	data() {
 		return {
 			newName: "",
@@ -136,6 +116,26 @@ export default {
 			this.users.forEach((user) => {
 				user.rank = scoreToRank[user.totalScore]
 			})
+		},
+	},
+	i18n: {
+		messages: {
+			en: {
+				MainTable: {
+					name: "Name",
+					rank: "Rank",
+					totalScore: "Total Score",
+					addUser: "Add",
+				},
+			},
+			ja: {
+				MainTable: {
+					name: "名前",
+					rank: "順位",
+					totalScore: "合計",
+					addUser: "追加",
+				},
+			},
 		},
 	},
 }
