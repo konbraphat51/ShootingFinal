@@ -1,6 +1,7 @@
 <template>
 	<div class="MainTable">
 		<tr>
+			<th></th>
 			<th>
 				{{ $t("MainTable.name") }}
 			</th>
@@ -16,6 +17,9 @@
 			</th>
 		</tr>
 		<tr v-for="user in users">
+			<td>
+				<img src="/src/assets/delete.svg" @click="deleteUser(user)" />
+			</td>
 			<td>
 				{{ user.name }}
 			</td>
@@ -33,6 +37,7 @@
 			</td>
 		</tr>
 		<tr class="AddingRow">
+			<td></td>
 			<td>
 				<input type="text" v-model="newName" />
 			</td>
@@ -70,8 +75,17 @@ export default {
 			})
 			this.newName = ""
 
-			this.scoreNums = 2 * (this.users.length - 1) + 10
+			this._onUserNumsChanged()
+		},
 
+		deleteUser(user) {
+			this.users = this.users.filter((u) => u !== user)
+
+			this._onUserNumsChanged()
+		},
+
+		_onUserNumsChanged() {
+			this.scoreNums = 2 * (this.users.length - 1) + 10
 			this._updateUsers()
 		},
 
