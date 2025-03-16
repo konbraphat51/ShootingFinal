@@ -1,7 +1,12 @@
 <template>
 	<div v-if="isInputing">
-		<input type="number" />
-		<button @click="isInputing = false">
+		<input
+			type="number"
+			ref="input"
+			:value="scoreX10 / 10"
+			@input="updateScore"
+		/>
+		<button @click="updateScore">
 			{{ $t("ScoreCell.done") }}
 		</button>
 	</div>
@@ -21,7 +26,15 @@ export default {
 			isInputing: false,
 		}
 	},
-	methods: {},
+	methods: {
+		updateScore() {
+			// switch mode
+			this.isInputing = false
+
+			// update score
+			this.$emit("scoreX10Updated", this.$refs.input.value * 10)
+		},
+	},
 	i18n: {
 		messages: {
 			en: {

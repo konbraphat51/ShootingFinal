@@ -25,8 +25,11 @@
 			<td>
 				{{ user.totalScore }}
 			</td>
-			<td v-for="score in user.scores">
-				<ScoreCell :scoreX10="score" />
+			<td v-for="(score, cnt) in user.scores">
+				<ScoreCell
+					:scoreX10="score"
+					@scoreX10Updated="(score) => _onScoreUpdated(user, cnt, score)"
+				/>
 			</td>
 		</tr>
 		<tr class="AddingRow">
@@ -116,6 +119,11 @@ export default {
 			this.users.forEach((user) => {
 				user.rank = scoreToRank[user.totalScore]
 			})
+		},
+
+		_onScoreUpdated(user, cnt, score) {
+			user.scores[cnt] = score
+			this._updateUsers()
 		},
 	},
 	i18n: {
