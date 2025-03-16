@@ -10,6 +10,10 @@
 			<th>
 				{{ $t("MainTable.totalScore") }}
 			</th>
+
+			<th v-for="cnt in scoreNums" :key="cnt">
+				{{ cnt }}
+			</th>
 		</tr>
 		<tr v-for="user in users" :key="cnt">
 			<td>
@@ -20,6 +24,9 @@
 			</td>
 			<td>
 				{{ user.totalScore }}
+			</td>
+			<td v-for="cnt in scoreNums" :key="cnt">
+				{{ user.scores[cnt - 1] }}
 			</td>
 		</tr>
 		<tr class="AddingRow">
@@ -62,6 +69,7 @@ export default {
 		return {
 			newName: "",
 			users: [],
+			scoreNums: 0,
 		}
 	},
 	methods: {
@@ -73,11 +81,16 @@ export default {
 				scores: [],
 			})
 			this.newName = ""
+
+			this.scoreNums = 2 * (this.users.length - 1) + 10
+
+			this._updateUsers()
 		},
 
 		_updateUsers() {
 			this._updateTotalScores()
 			this._updateRanks()
+			this._fillEmptyScores()
 		},
 
 		_updateTotalScores() {
@@ -86,6 +99,14 @@ export default {
 				user.scores.forEach((score) => {
 					user.totalScore += score
 				})
+			})
+		},
+
+		_fillEmptyScores() {
+			this.users.forEach((user) => {
+				while (user.scores.length < this.scoreNums) {
+					user.scores.push(0)
+				}
 			})
 		},
 
@@ -110,15 +131,6 @@ export default {
 			this.users.forEach((user) => {
 				user.rank = scoreToRank[user.totalScore]
 			})
-		},
-	},
-
-	watch: {
-		users: {
-			handler() {
-				this._updateUsers()
-			},
-			deep: true,
 		},
 	},
 }
