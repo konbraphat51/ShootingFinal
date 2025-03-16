@@ -4,7 +4,7 @@
 			type="number"
 			ref="input"
 			:value="scoreX10 / 10"
-			@input="updateScore"
+			@keydown.enter="updateScore"
 		/>
 		<button @click="updateScore">
 			{{ $t("ScoreCell.done") }}
