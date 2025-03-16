@@ -15,7 +15,7 @@
 				{{ cnt }}
 			</th>
 		</tr>
-		<tr v-for="user in users" :key="cnt">
+		<tr v-for="user in users">
 			<td>
 				{{ user.name }}
 			</td>
@@ -25,8 +25,8 @@
 			<td>
 				{{ user.totalScore }}
 			</td>
-			<td v-for="cnt in scoreNums" :key="cnt">
-				{{ user.scores[cnt - 1] }}
+			<td v-for="score in user.scores">
+				<ScoreCell :scoreX10="score" />
 			</td>
 		</tr>
 		<tr class="AddingRow">
@@ -43,8 +43,13 @@
 </template>
 
 <script>
+import ScoreCell from "./ScoreCell.vue"
+
 export default {
 	name: "MainTable",
+	components: {
+		ScoreCell,
+	},
 	i18n: {
 		messages: {
 			en: {
