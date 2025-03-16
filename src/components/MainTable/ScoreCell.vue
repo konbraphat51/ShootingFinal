@@ -5,6 +5,9 @@
 			ref="input"
 			:value="scoreX10 / 10"
 			@keydown.enter="updateScore"
+			max="10"
+			min="0.1"
+			step="0.1"
 		/>
 		<button @click="updateScore">
 			{{ $t("ScoreCell.done") }}
@@ -31,8 +34,16 @@ export default {
 			// switch mode
 			this.isInputing = false
 
+			//value control
+			let inputScore = parseInt(this.$refs.input.value * 10)
+			if (inputScore < 1) {
+				inputScore = 1
+			} else if (inputScore > 100) {
+				inputScore = 100
+			}
+
 			// update score
-			this.$emit("scoreX10Updated", this.$refs.input.value * 10)
+			this.$emit("scoreX10Updated", inputScore)
 		},
 	},
 	i18n: {
