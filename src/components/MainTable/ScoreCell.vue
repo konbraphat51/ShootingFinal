@@ -5,8 +5,8 @@
 			ref="input"
 			:value="scoreX10 / 10"
 			@keydown.enter="updateScore"
-			max="10"
-			min="0.1"
+			max="10.9"
+			min="0"
 			step="0.1"
 		/>
 		<button @click="updateScore">
@@ -36,10 +36,10 @@ export default {
 
 			//value control
 			let inputScore = parseInt(this.$refs.input.value * 10)
-			if (inputScore < 1) {
-				inputScore = 1
-			} else if (inputScore > 100) {
-				inputScore = 100
+			if (inputScore < 0) {
+				inputScore = 0
+			} else if (inputScore > 109) {
+				inputScore = 109
 			}
 
 			// update score
