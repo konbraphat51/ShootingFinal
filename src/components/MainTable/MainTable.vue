@@ -26,7 +26,11 @@
 			<td>
 				<input type="text" v-model="newName" />
 			</td>
-			<td><button @click="addUser">Add</button></td>
+			<td>
+				<button @click="addUser">
+					{{ $t("MainTable.addUser") }}
+				</button>
+			</td>
 		</tr>
 	</div>
 </template>
@@ -41,6 +45,7 @@ export default {
 					name: "Name",
 					rank: "Rank",
 					totalScore: "Total Score",
+					addUser: "Add",
 				},
 			},
 			ja: {
@@ -48,6 +53,7 @@ export default {
 					name: "名前",
 					rank: "順位",
 					totalScore: "合計",
+					addUser: "追加",
 				},
 			},
 		},
