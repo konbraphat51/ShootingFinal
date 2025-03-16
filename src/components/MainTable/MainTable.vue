@@ -23,7 +23,7 @@
 				{{ user.rank }}
 			</td>
 			<td>
-				{{ user.totalScore }}
+				{{ user.totalScore / 10 }}
 			</td>
 			<td v-for="(score, cnt) in user.scores">
 				<ScoreCell
