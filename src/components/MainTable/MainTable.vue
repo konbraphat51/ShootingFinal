@@ -1,52 +1,54 @@
 <template>
 	<div class="MainTable">
-		<tr>
-			<th></th>
-			<th>
-				{{ $t("MainTable.name") }}
-			</th>
-			<th>
-				{{ $t("MainTable.rank") }}
-			</th>
-			<th>
-				{{ $t("MainTable.totalScore") }}
-			</th>
+		<table>
+			<tr>
+				<th class="Fixed Delete"></th>
+				<th class="Fixed Name">
+					{{ $t("MainTable.name") }}
+				</th>
+				<th class="Fixed Rank">
+					{{ $t("MainTable.rank") }}
+				</th>
+				<th class="Fixed TotalScore">
+					{{ $t("MainTable.totalScore") }}
+				</th>
 
-			<th v-for="cnt in scoreNums" :key="cnt">
-				{{ cnt }}
-			</th>
-		</tr>
-		<tr v-for="user in users">
-			<td>
-				<img src="/src/assets/delete.svg" @click="deleteUser(user)" />
-			</td>
-			<td>
-				{{ user.name }}
-			</td>
-			<td>
-				{{ user.rank }}
-			</td>
-			<td>
-				{{ user.totalScore / 10 }}
-			</td>
-			<td v-for="(score, cnt) in user.scores">
-				<ScoreCell
-					:scoreX10="score"
-					@scoreX10Updated="(score) => _onScoreUpdated(user, cnt, score)"
-				/>
-			</td>
-		</tr>
-		<tr class="AddingRow">
-			<td></td>
-			<td>
-				<input type="text" v-model="newName" />
-			</td>
-			<td>
-				<button @click="addUser">
-					{{ $t("MainTable.addUser") }}
-				</button>
-			</td>
-		</tr>
+				<th class="Score" v-for="cnt in scoreNums" :key="cnt">
+					{{ cnt }}
+				</th>
+			</tr>
+			<tr v-for="user in users">
+				<td class="Fixed Delete">
+					<img src="/src/assets/delete.svg" @click="deleteUser(user)" />
+				</td>
+				<td class="Fixed Name">
+					{{ user.name }}
+				</td>
+				<td class="Fixed Rank">
+					{{ user.rank }}
+				</td>
+				<td class="Fixed TotalScore">
+					{{ user.totalScore / 10 }}
+				</td>
+				<td class="Score" v-for="(score, cnt) in user.scores">
+					<ScoreCell
+						:scoreX10="score"
+						@scoreX10Updated="(score) => _onScoreUpdated(user, cnt, score)"
+					/>
+				</td>
+			</tr>
+			<tr class="AddingRow">
+				<td class="Fixed"></td>
+				<td class="Fixed">
+					<input type="text" v-model="newName" />
+				</td>
+				<td class="Fixed">
+					<button @click="addUser">
+						{{ $t("MainTable.addUser") }}
+					</button>
+				</td>
+			</tr>
+		</table>
 	</div>
 </template>
 
@@ -162,3 +164,59 @@ export default {
 	},
 }
 </script>
+
+<style scoped>
+.MainTable {
+	overflow-x: auto;
+	width: 100%;
+}
+
+table {
+	table-layout: fixed;
+
+	width: 100%;
+	border-collapse: collapse;
+	margin: 25px 0;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+th.Score {
+	background-color: #c4e7ff;
+}
+
+.Score {
+	width: 100px;
+}
+
+.Fixed {
+	position: sticky;
+}
+
+th.Fixed {
+	background-color: rgb(204, 248, 233);
+}
+
+td.Fixed {
+	background-color: rgb(255, 255, 255);
+}
+
+.Delete {
+	width: 50px;
+	left: 0;
+}
+
+.Name {
+	width: 200px;
+	left: 50px;
+}
+
+.Rank {
+	width: 50px;
+	left: 250px;
+}
+
+.TotalScore {
+	width: 50px;
+	left: 300px;
+}
+</style>
