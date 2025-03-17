@@ -38,11 +38,11 @@
 				</td>
 			</tr>
 			<tr class="AddingRow">
-				<td class="Fixed"></td>
-				<td class="Fixed">
+				<td class="Fixed Delete"></td>
+				<td class="Fixed Name">
 					<input type="text" v-model="newName" />
 				</td>
-				<td class="Fixed">
+				<td class="Fixed Rank">
 					<button @click="addUser">
 						{{ $t("MainTable.addUser") }}
 					</button>
