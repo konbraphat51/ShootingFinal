@@ -45,7 +45,7 @@
 			<tr class="AddingRow">
 				<td class="Fixed Delete"></td>
 				<td class="Fixed Name">
-					<input type="text" v-model="newName" />
+					<input type="text" v-model="newName" @keydown.enter="addUser" />
 				</td>
 				<td class="Fixed Rank">
 					<button @click="addUser">
