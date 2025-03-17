@@ -13,7 +13,12 @@
 					{{ $t("MainTable.totalScore") }}
 				</th>
 
-				<th class="Score" v-for="cnt in scoreNums" :key="cnt">
+				<th
+					class="Score"
+					v-for="cnt in scoreNums"
+					:key="cnt"
+					:class="{Filled: columnFilleds[cnt - 1]}"
+				>
 					{{ cnt }}
 				</th>
 			</tr>
@@ -65,6 +70,7 @@ export default {
 			newName: "",
 			users: [],
 			scoreNums: 0,
+			columnFilleds: [],
 		}
 	},
 	methods: {
@@ -89,6 +95,10 @@ export default {
 		onUserNumsChanged() {
 			this.scoreNums = 2 * (this.users.length - 1) + 10
 			this.updateUsers()
+
+			while (this.columnFilleds.length < this.scoreNums) {
+				this.columnFilleds.push(false)
+			}
 		},
 
 		updateUsers() {
@@ -143,6 +153,20 @@ export default {
 		onScoreUpdated(user, cnt, score) {
 			user.scores[cnt] = score
 			this.updateUsers()
+			this.updateScoreColumn()
+		},
+
+		updateScoreColumn() {
+			for (let column = 0; column < this.scoreNums; column++) {
+				let isFilled = true
+				for (let user of this.users) {
+					if (user.scores[column] === -1) {
+						isFilled = false
+						break
+					}
+				}
+				this.columnFilleds[column] = isFilled
+			}
 		},
 	},
 	i18n: {
@@ -194,6 +218,10 @@ table tr:nth-child(odd):not(.AddingRow) td {
 
 th.Score {
 	background-color: #c4e7ff;
+}
+
+th.Score.Filled {
+	background-color: #fdff8d;
 }
 
 .Score {
