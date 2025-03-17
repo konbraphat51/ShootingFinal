@@ -227,4 +227,12 @@ td.Fixed {
 	width: 50px;
 	left: 300px;
 }
+
+.AddingRow {
+	background-color: #ffb7b7;
+	td {
+		background-color: #ffb7b7;
+		border-right: none;
+	}
+}
 </style>
