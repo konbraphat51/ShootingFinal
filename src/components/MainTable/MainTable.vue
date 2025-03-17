@@ -33,7 +33,7 @@
 				<td class="Score" v-for="(score, cnt) in user.scores">
 					<ScoreCell
 						:scoreX10="score"
-						@scoreX10Updated="(score) => _onScoreUpdated(user, cnt, score)"
+						@scoreX10Updated="(score) => onScoreUpdated(user, cnt, score)"
 					/>
 				</td>
 			</tr>
@@ -77,27 +77,27 @@ export default {
 			})
 			this.newName = ""
 
-			this._onUserNumsChanged()
+			this.onUserNumsChanged()
 		},
 
 		deleteUser(user) {
 			this.users = this.users.filter((u) => u !== user)
 
-			this._onUserNumsChanged()
+			this.onUserNumsChanged()
 		},
 
-		_onUserNumsChanged() {
+		onUserNumsChanged() {
 			this.scoreNums = 2 * (this.users.length - 1) + 10
-			this._updateUsers()
+			this.updateUsers()
 		},
 
-		_updateUsers() {
-			this._updateTotalScores()
-			this._updateRanks()
-			this._fillEmptyScores()
+		updateUsers() {
+			this.updateTotalScores()
+			this.updateRanks()
+			this.fillEmptyScores()
 		},
 
-		_updateTotalScores() {
+		updateTotalScores() {
 			this.users.forEach((user) => {
 				user.totalScore = 0
 				user.scores.forEach((score) => {
@@ -109,7 +109,7 @@ export default {
 			})
 		},
 
-		_fillEmptyScores() {
+		fillEmptyScores() {
 			this.users.forEach((user) => {
 				while (user.scores.length < this.scoreNums) {
 					user.scores.push(-1)
@@ -117,7 +117,7 @@ export default {
 			})
 		},
 
-		_updateRanks() {
+		updateRanks() {
 			//sort total scores
 			//larger first
 			let totalScores = []
@@ -140,9 +140,9 @@ export default {
 			})
 		},
 
-		_onScoreUpdated(user, cnt, score) {
+		onScoreUpdated(user, cnt, score) {
 			user.scores[cnt] = score
-			this._updateUsers()
+			this.updateUsers()
 		},
 	},
 	i18n: {
