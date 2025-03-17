@@ -16,7 +16,7 @@
 	<div v-else @click="startInput">
 		<div v-if="scoreX10 == -1">X</div>
 		<div v-else>
-			{{ scoreX10 / 10 }}
+			{{ (scoreX10 / 10).toFixed(1) }}
 		</div>
 	</div>
 </template>
