@@ -28,7 +28,7 @@
 					{{ user.rank }}
 				</td>
 				<td class="Fixed TotalScore">
-					{{ user.totalScore / 10 }}
+					{{ (user.totalScore / 10).toFixed(1) }}
 				</td>
 				<td class="Score" v-for="(score, cnt) in user.scores">
 					<ScoreCell
