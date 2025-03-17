@@ -3,7 +3,7 @@
 		<input
 			type="number"
 			ref="input"
-			:value="scoreX10 / 10"
+			:value="placeHolder"
 			@keydown.enter="updateScore"
 			max="10.9"
 			min="0"
@@ -13,8 +13,11 @@
 			{{ $t("ScoreCell.done") }}
 		</button>
 	</div>
-	<div v-else @click="isInputing = true">
-		{{ scoreX10 / 10 }}
+	<div v-else @click="startInput">
+		<div v-if="scoreX10 == -1">X</div>
+		<div v-else>
+			{{ scoreX10 / 10 }}
+		</div>
 	</div>
 </template>
 
@@ -27,6 +30,7 @@ export default {
 	data() {
 		return {
 			isInputing: false,
+			placeHolder: 0,
 		}
 	},
 	methods: {
@@ -44,6 +48,16 @@ export default {
 
 			// update score
 			this.$emit("scoreX10Updated", inputScore)
+		},
+
+		startInput() {
+			this.isInputing = true
+
+			if (this.scoreX10 == -1) {
+				this.placeHolder = NaN
+			} else {
+				this.placeHolder = this.scoreX10 / 10
+			}
 		},
 	},
 	i18n: {

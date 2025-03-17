@@ -109,7 +109,7 @@ export default {
 		_fillEmptyScores() {
 			this.users.forEach((user) => {
 				while (user.scores.length < this.scoreNums) {
-					user.scores.push(0)
+					user.scores.push(-1)
 				}
 			})
 		},
