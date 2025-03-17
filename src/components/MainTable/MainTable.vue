@@ -22,7 +22,7 @@
 					{{ cnt }}
 				</th>
 			</tr>
-			<tr v-for="user in users">
+			<tr v-for="user in users" :class="{Disqualified: user.disqualified}">
 				<td class="Fixed Delete">
 					<img src="/src/assets/delete.svg" @click="deleteUser(user)" />
 				</td>
@@ -80,6 +80,7 @@ export default {
 				rank: 0,
 				totalScore: 0,
 				scores: [],
+				disqualified: false,
 			})
 			this.newName = ""
 
@@ -105,6 +106,7 @@ export default {
 			this.updateTotalScores()
 			this.updateRanks()
 			this.fillEmptyScores()
+			this.updateDisqualifications()
 		},
 
 		updateTotalScores() {
@@ -150,17 +152,44 @@ export default {
 			})
 		},
 
+		updateDisqualifications() {
+			//calculate current round
+			let currentRound = 0
+			for (let cnt = 0; cnt < this.scoreNums; cnt++) {
+				if (this.columnFilleds[cnt]) {
+					currentRound = cnt + 1
+				} else {
+					break
+				}
+			}
+
+			//calculate number of disqualified users
+			let disqualifiedNum = 0
+			if (currentRound >= 12) {
+				disqualifiedNum = parseInt((currentRound - 10) / 2)
+			}
+
+			//disqualify users
+			const disqualifiedRank = this.users.length - (disqualifiedNum - 1)
+			this.users.forEach((user) => {
+				user.disqualified = user.rank >= disqualifiedRank
+			})
+		},
+
 		onScoreUpdated(user, cnt, score) {
 			user.scores[cnt] = score
-			this.updateUsers()
+
+			//updateScoreColumn() needs to proceed updateUsers()
 			this.updateScoreColumn()
+			this.updateUsers()
 		},
 
 		updateScoreColumn() {
 			for (let column = 0; column < this.scoreNums; column++) {
 				let isFilled = true
 				for (let user of this.users) {
-					if (user.scores[column] === -1) {
+					//if qualified user has not entered score...
+					if (user.scores[column] === -1 && !user.disqualified) {
 						isFilled = false
 						break
 					}
@@ -212,7 +241,7 @@ td {
 	border-right: 1px solid #8a8a8a;
 }
 
-table tr:nth-child(odd):not(.AddingRow) td {
+table tr:nth-child(odd):not(.AddingRow):not(.Disqualified) td {
 	background-color: #dadada;
 }
 
@@ -265,6 +294,12 @@ td.Fixed {
 	td {
 		background-color: #ffb7b7;
 		border-right: none;
+	}
+}
+
+tr.Disqualified {
+	td {
+		background-color: #ff0000;
 	}
 }
 </style>
