@@ -180,12 +180,13 @@ table {
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-th {
-	border-right: 1px solid #e0e0e0;
+th,
+td {
+	border-right: 1px solid #8a8a8a;
 }
 
-td {
-	border-right: 1px solid #e0e0e0;
+table tr:nth-child(odd):not(.AddingRow) td {
+	background-color: #dadada;
 }
 
 th.Score {
