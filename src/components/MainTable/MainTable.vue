@@ -35,10 +35,10 @@
 				<td class="Fixed TotalScore">
 					{{ (user.totalScore / 10).toFixed(1) }}
 				</td>
-				<td class="Score" v-for="(score, cnt) in user.scores">
+				<td class="Score" v-for="cnt in scoreNums" :key="cnt">
 					<ScoreCell
-						:scoreX10="score"
-						@scoreX10Updated="(score) => onScoreUpdated(user, cnt, score)"
+						:scoreX10="user.scores[cnt - 1]"
+						@scoreX10Updated="(score) => onScoreUpdated(user, cnt - 1, score)"
 					/>
 				</td>
 			</tr>
