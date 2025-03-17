@@ -101,7 +101,10 @@ export default {
 			this.users.forEach((user) => {
 				user.totalScore = 0
 				user.scores.forEach((score) => {
-					user.totalScore += score
+					//exclude unentered scores
+					if (score != -1) {
+						user.totalScore += score
+					}
 				})
 			})
 		},
