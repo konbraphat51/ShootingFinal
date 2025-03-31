@@ -1,5 +1,6 @@
 <template>
 	<div class="MainTable">
+		<SortSelector @sortChanged="onSortTypeChanged" />
 		<table>
 			<tr>
 				<th class="Fixed Delete"></th>
@@ -59,11 +60,13 @@
 
 <script>
 import ScoreCell from "./ScoreCell.vue"
+import SortSelector from "./SortSelector.vue"
 
 export default {
 	name: "MainTable",
 	components: {
 		ScoreCell,
+		SortSelector,
 	},
 	data() {
 		return {
@@ -71,6 +74,7 @@ export default {
 			users: [],
 			scoreNums: 0,
 			columnFilleds: [],
+			sortType: "RANK", // added sortType to track the current sorting method
 		}
 	},
 	methods: {
@@ -107,6 +111,7 @@ export default {
 			this.updateRanks()
 			this.fillEmptyScores()
 			this.updateDisqualifications()
+			this.sortUsers()
 		},
 
 		updateTotalScores() {
@@ -196,6 +201,28 @@ export default {
 				}
 				this.columnFilleds[column] = isFilled
 			}
+		},
+
+		onSortTypeChanged(sortType) {
+			this.sortType = sortType
+			this.sortUsers()
+		},
+
+		sortUsers() {
+			if (this.sortType === "RANK") {
+				this.sortUsersByRank()
+			} else if (this.sortType === "NAME") {
+				this.sortUsersByName()
+			} else {
+				console.error("Unknown sort type:", this.sortType)
+			}
+		},
+
+		sortUsersByRank() {
+			this.users.sort((a, b) => a.rank - b.rank)
+		},
+		sortUsersByName() {
+			this.users.sort((a, b) => a.name.localeCompare(b.name))
 		},
 	},
 	i18n: {
