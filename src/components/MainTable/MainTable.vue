@@ -26,6 +26,35 @@
 					{{ cnt }}
 				</th>
 			</tr>
+			<tr class="Highscore">
+				<td class="Fixed Delete"></td>
+				<td class="Fixed Name">
+					{{ $t("MainTable.highscore") }}
+				</td>
+				<td class="Fixed Rank"></td>
+				<td class="Fixed TotalScore">
+					{{
+						// find the first user with rank 1 and return their totalScore
+						(() => {
+							for (let cnt = 0; cnt < this.users.length; cnt++) {
+								if (this.users[cnt].rank === 1) {
+									return (this.users[cnt].totalScore / 10).toFixed(1)
+								}
+							}
+							return "-"
+						})()
+					}}
+				</td>
+				<td class="Fixed Diff"></td>
+
+				<td class="Score" v-for="cnt in scoreNums" :key="cnt">
+					{{
+						columnHighscores[cnt - 1] === -1
+							? "-"
+							: (columnHighscores[cnt - 1] / 10).toFixed(1)
+					}}
+				</td>
+			</tr>
 			<tr v-for="user in users" :class="{Disqualified: user.disqualified}">
 				<td class="Fixed Delete">
 					<img src="/src/assets/delete.svg" @click="deleteUser(user)" />
@@ -84,6 +113,7 @@ export default {
 			users: [],
 			scoreNums: 0,
 			columnFilleds: [],
+			columnHighscores: [],
 			sortType: "RANK", // added sortType to track the current sorting method
 		}
 	},
@@ -127,6 +157,7 @@ export default {
 			this.updateDisqualifications()
 			this.sortUsers()
 			this.updateScoreDiff()
+			this.updateColumnHighscores()
 		},
 
 		updateTotalScores() {
@@ -259,6 +290,19 @@ export default {
 				}
 			}
 		},
+
+		updateColumnHighscores() {
+			this.columnHighscores = []
+			for (let column = 0; column < this.scoreNums; column++) {
+				let maxScore = -1
+				for (let user of this.users) {
+					if (user.scores[column] > maxScore) {
+						maxScore = user.scores[column]
+					}
+				}
+				this.columnHighscores.push(maxScore)
+			}
+		},
 	},
 	i18n: {
 		messages: {
@@ -269,6 +313,7 @@ export default {
 					totalScore: "Total Score",
 					addUser: "Add",
 					diff: "Score Diff",
+					highscore: "Highscore",
 				},
 			},
 			ja: {
@@ -278,6 +323,7 @@ export default {
 					totalScore: "合計",
 					addUser: "追加",
 					diff: "点数差",
+					highscore: "最高得点",
 				},
 			},
 		},
