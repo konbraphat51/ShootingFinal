@@ -351,7 +351,7 @@ td {
 	border-right: 1px solid #8a8a8a;
 }
 
-table tr:nth-child(odd):not(.AddingRow):not(.Disqualified) td {
+table tr:nth-child(even):not(.AddingRow):not(.Disqualified):not(.Highscore) td {
 	background-color: #dadada;
 }
 
@@ -361,6 +361,12 @@ th.Score {
 
 th.Score.Filled {
 	background-color: #fdff8d;
+}
+
+tr.Highscore {
+	td {
+		background-color: #fff4c5;
+	}
 }
 
 .Score {
