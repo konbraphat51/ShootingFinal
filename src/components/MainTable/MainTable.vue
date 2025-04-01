@@ -13,6 +13,9 @@
 				<th class="Fixed TotalScore">
 					{{ $t("MainTable.totalScore") }}
 				</th>
+				<th class="Fixed Diff">
+					{{ $t("MainTable.diff") }}
+				</th>
 
 				<th
 					class="Score"
@@ -35,6 +38,9 @@
 				</td>
 				<td class="Fixed TotalScore">
 					{{ (user.totalScore / 10).toFixed(1) }}
+				</td>
+				<td class="Fixed Diff">
+					{{ user.scoreDiff === undefined ? "-" : user.scoreDiff / 10 }}
 				</td>
 				<td class="Score" v-for="cnt in scoreNums" :key="cnt">
 					<ScoreCell
@@ -87,6 +93,7 @@ export default {
 					totalScore: 0,
 					scores: [],
 					disqualified: false,
+					scoreDiff: undefined,
 				},
 			)
 			this.newName = ""
@@ -115,6 +122,7 @@ export default {
 			this.fillEmptyScores()
 			this.updateDisqualifications()
 			this.sortUsers()
+			this.updateScoreDiff()
 		},
 
 		updateTotalScores() {
@@ -227,6 +235,26 @@ export default {
 		sortUsersByName() {
 			this.users.sort((a, b) => a.name.localeCompare(b.name))
 		},
+
+		updateScoreDiff() {
+			const usersSortedByRank = [...this.users].sort((a, b) => a.rank - b.rank)
+
+			//first is empty
+			if (usersSortedByRank.length > 0) {
+				usersSortedByRank[0].scoreDiff = undefined
+			}
+
+			for (let cnt = 1; cnt < usersSortedByRank.length; cnt++) {
+				const prevUser = usersSortedByRank[cnt - 1]
+				const currentUser = usersSortedByRank[cnt]
+
+				if (prevUser.totalScore === currentUser.totalScore) {
+					currentUser.scoreDiff = prevUser.scoreDiff
+				} else {
+					currentUser.scoreDiff = prevUser.totalScore - currentUser.totalScore
+				}
+			}
+		},
 	},
 	i18n: {
 		messages: {
@@ -236,6 +264,7 @@ export default {
 					rank: "Rank",
 					totalScore: "Total Score",
 					addUser: "Add",
+					diff: "Score Diff",
 				},
 			},
 			ja: {
@@ -244,6 +273,7 @@ export default {
 					rank: "順位",
 					totalScore: "合計",
 					addUser: "追加",
+					diff: "点数差",
 				},
 			},
 		},
@@ -317,6 +347,11 @@ td.Fixed {
 .TotalScore {
 	width: 50px;
 	left: 300px;
+}
+
+.Diff {
+	width: 50px;
+	left: 350px;
 }
 
 .AddingRow {
