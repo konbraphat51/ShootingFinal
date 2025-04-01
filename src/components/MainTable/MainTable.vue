@@ -40,7 +40,11 @@
 					{{ (user.totalScore / 10).toFixed(1) }}
 				</td>
 				<td class="Fixed Diff">
-					{{ user.scoreDiff === undefined ? "-" : user.scoreDiff / 10 }}
+					{{
+						user.scoreDiff === undefined
+							? "-"
+							: (user.scoreDiff / 10).toFixed(1)
+					}}
 				</td>
 				<td class="Score" v-for="cnt in scoreNums" :key="cnt">
 					<ScoreCell
