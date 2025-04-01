@@ -79,13 +79,16 @@ export default {
 	},
 	methods: {
 		addUser() {
-			this.users.push({
-				name: this.newName,
-				rank: 0,
-				totalScore: 0,
-				scores: [],
-				disqualified: false,
-			})
+			this.users.push(
+				//user class
+				{
+					name: this.newName,
+					rank: 0,
+					totalScore: 0,
+					scores: [],
+					disqualified: false,
+				},
+			)
 			this.newName = ""
 
 			this.onUserNumsChanged()
