@@ -5,7 +5,7 @@
 			ref="input"
 			:value="placeHolder"
 			@keydown.enter="updateScore"
-			max="10.9"
+			:max="maxX10 / 10"
 			min="0"
 			step="0.1"
 		/>
@@ -26,6 +26,7 @@ export default {
 	name: "ScoreCell",
 	props: {
 		scoreX10: Number,
+		maxX10: Number,
 	},
 	data() {
 		return {
@@ -38,12 +39,12 @@ export default {
 			// switch mode
 			this.isInputing = false
 
-			//value control
+			// value control
 			let inputScore = parseInt(this.$refs.input.value * 10)
 			if (inputScore < 0) {
 				inputScore = 0
-			} else if (inputScore > 109) {
-				inputScore = 109
+			} else if (inputScore > this.maxX10) {
+				inputScore = this.maxX10
 			}
 
 			// update score

@@ -17,13 +17,16 @@
 					{{ $t("MainTable.diff") }}
 				</th>
 
+				<th class="Score" :class="{Filled: columnFilleds[0]}">1-5</th>
+				<th class="Score" :class="{Filled: columnFilleds[1]}">6-10</th>
+
 				<th
 					class="Score"
-					v-for="cnt in scoreNums"
+					v-for="cnt in scoreNums - 2"
 					:key="cnt"
-					:class="{Filled: columnFilleds[cnt - 1]}"
+					:class="{Filled: columnFilleds[cnt + 2 - 1]}"
 				>
-					{{ cnt }}
+					{{ cnt + 10 }}
 				</th>
 			</tr>
 			<tr class="Highscore">
@@ -45,7 +48,9 @@
 						})()
 					}}
 				</td>
-				<td class="Fixed Diff"></td>
+				<td class="Fixed Diff">
+					<!-- Empty -->
+				</td>
 
 				<td class="Score" v-for="cnt in scoreNums" :key="cnt">
 					{{
@@ -75,10 +80,27 @@
 							: (user.scoreDiff / 10).toFixed(1)
 					}}
 				</td>
-				<td class="Score" v-for="cnt in scoreNums" :key="cnt">
+				<td class="Score">
 					<ScoreCell
-						:scoreX10="user.scores[cnt - 1]"
-						@scoreX10Updated="(score) => onScoreUpdated(user, cnt - 1, score)"
+						:scoreX10="user.scores[0]"
+						:maxX10="109 * 5"
+						@scoreX10Updated="(score) => onScoreUpdated(user, 0, score)"
+					/>
+				</td>
+				<td class="Score">
+					<ScoreCell
+						:scoreX10="user.scores[1]"
+						:maxX10="109 * 5"
+						@scoreX10Updated="(score) => onScoreUpdated(user, 1, score)"
+					/>
+				</td>
+				<td class="Score" v-for="cnt in scoreNums - 2" :key="cnt">
+					<ScoreCell
+						:scoreX10="user.scores[cnt + 2 - 1]"
+						:maxX10="109"
+						@scoreX10Updated="
+							(score) => onScoreUpdated(user, cnt + 2 - 1, score)
+						"
 					/>
 				</td>
 			</tr>
@@ -111,11 +133,14 @@ export default {
 		return {
 			newName: "",
 			users: [],
-			scoreNums: 0,
+			scoreNums: 2,
 			columnFilleds: [],
 			columnHighscores: [],
 			sortType: "RANK", // added sortType to track the current sorting method
 		}
+	},
+	beforeMount() {
+		this.onUserNumsChanged()
 	},
 	methods: {
 		addUser() {
@@ -142,7 +167,7 @@ export default {
 		},
 
 		onUserNumsChanged() {
-			this.scoreNums = 2 * (this.users.length - 1) + 10
+			this.scoreNums = 2 * this.users.length + 2
 			this.updateUsers()
 
 			while (this.columnFilleds.length < this.scoreNums) {
